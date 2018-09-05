@@ -46,7 +46,7 @@ RUN set -xe \
 ENV NODE_VERSION=10.9.0 NPM_VERSION=6.2.0
 
 RUN echo "http://dl-4.alpinelinux.org/alpine/v3.2/main" >> /etc/apk/repositories && \
-    apk add --update python linux-headers libgcc libstdc++ binutils-gold && \
+    apk add --update make gcc g++ python linux-headers libgcc libstdc++ binutils-gold && \
     curl -sSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.gz | tar -xz && \
     cd node-v${NODE_VERSION} && \
     ./configure --prefix=/usr --without-snapshot && \
