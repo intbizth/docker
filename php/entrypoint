@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+## Github connect
+# git config --global url."https://${GITHUB_ACCESS_TOKEN}:@github.com/".insteadOf "https://github.com/"
+if [[ -z "${GITHUB_REPOSITORY}" ]]; then
+  echo 'There are no `GITHUB_REPOSITORY`.';
+  exit 0;
+else
+  GITHUB_REPOSITORY="${GITHUB_REPOSITORY}"
+  echo "git clone $GITHUB_REPOSITORY"
+  exec "git clone $GITHUB_REPOSITORY"
+fi
+
+# Start fpm
+php-fpm
