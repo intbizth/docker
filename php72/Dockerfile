@@ -43,41 +43,5 @@ RUN set -xe \
     && apk add --no-cache --virtual .php-phpexts-rundeps $runDeps \
     && apk del .build-deps
 
-ENV NODE_VERSION=10.9.0 NPM_VERSION=6.2.0
-
-RUN echo "http://dl-4.alpinelinux.org/alpine/v3.2/main" >> /etc/apk/repositories && \
-    apk add --update make gcc g++ python linux-headers libgcc libstdc++ binutils-gold && \
-    curl -sSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.gz | tar -xz && \
-    cd node-v${NODE_VERSION} && \
-    ./configure --prefix=/usr --without-snapshot && \
-    make -j$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-    make install && \
-    cd / && \
-    npm install -g npm@${NPM_VERSION} && \
-    apk del gcc g++ linux-headers binutils-gold && \
-    rm -rf node-v* \
-    /usr/share/man /tmp/* /var/cache/apk/* /root/.npm /root/.node-gyp \
-    /usr/lib/node_modules/npm/man /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html
-
-ENV YARN_VERSION 1.9.2
-
-RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
-  && for key in \
-    6A010C5166006599AA17F08146C2130DFD2497F5 \
-  ; do \
-    gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
-    gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
-    gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
-  done \
-  && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
-  && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
-  && gpg --batch --verify yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
-  && mkdir -p /opt \
-  && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
-  && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
-  && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
-  && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
-  && apk del .build-deps-yarn
-
 COPY entrypoint /usr/local/bin/
 ENTRYPOINT ["entrypoint"]
