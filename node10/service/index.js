@@ -16,7 +16,7 @@ Connection.on('connect', function () {
 
 Connection.on('disconnect', function (params) {
     Logger.info('AMQP Disconnected.');
-    console.log(params.err);
+    //console.log(params.err);
 });
 
 for (let i in Queues) {

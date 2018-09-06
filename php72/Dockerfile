@@ -44,7 +44,7 @@ RUN set -xe \
     && apk del .build-deps
 
 # `zzz` to make sure it's end of files.
-COPY ./php.ini /usr/local/etc/php/zzz.ini
+COPY ./php.ini /usr/local/etc/php/conf.d/zzz.ini
 COPY ./fpm.conf /usr/local/etc/php-fpm.d/zzz.conf
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
@@ -54,11 +54,11 @@ RUN composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress
 
 COPY ./composer.json /var/etc/composer.json
 RUN cd /var/etc && composer install
-RUN mkdir -p /home/www-data/public
-RUN echo '<?php phpinfo();' > /home/www-data/public/index.php
 
 WORKDIR /home/www-data
 
 COPY ./entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["php-fpm"]
