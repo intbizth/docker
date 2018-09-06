@@ -43,5 +43,20 @@ RUN set -xe \
     && apk add --no-cache --virtual .php-phpexts-rundeps $runDeps \
     && apk del .build-deps
 
+# `zzz` to make sure it's end of files.
+COPY ./php.ini /usr/local/etc/php/zzz.ini
+COPY ./fpm.conf /usr/local/etc/php-fpm.d/zzz.conf
+
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER 1
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress --no-suggest --classmap-authoritative
+
+COPY ./composer.json /var/etc/composer.json
+RUN cd /var/etc && composer install
+
+WORKDIR /home/www-data
+
 COPY entrypoint /usr/local/bin/
+
 ENTRYPOINT ["entrypoint"]
