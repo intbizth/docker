@@ -12,9 +12,10 @@ fi
 ## Github connect
 # git config --global url."https://${GITHUB_ACCESS_TOKEN}:@github.com/".insteadOf "https://github.com/"
 if [[ -z "${GITHUB_REPOSITORY}" ]]; then
-  echo 'There are no `GITHUB_REPOSITORY`.';
-  exit 0;
+  echo 'WARN: There are no `GITHUB_REPOSITORY` env defined.';
 else
+  rm -rf /home/www-data/*
+  rm -rf /home/www-data/.*
   echo "git clone ${GITHUB_REPOSITORY}"
   exec "git clone ${GITHUB_REPOSITORY}"
 fi
