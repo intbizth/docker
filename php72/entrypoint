@@ -16,8 +16,8 @@ if [[ -z "${GITHUB_REPOSITORY}" ]]; then
 else
   rm -rf /home/www-data/*
   rm -rf /home/www-data/.*
-  echo "git clone ${GITHUB_REPOSITORY}"
-  exec "git clone ${GITHUB_REPOSITORY}"
+  echo "git clone ${GITHUB_REPOSITORY} ."
+  exec "git clone ${GITHUB_REPOSITORY} ."
 fi
 
 # first arg is `-f` or `--some-option`
