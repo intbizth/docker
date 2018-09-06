@@ -54,6 +54,7 @@ RUN composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress
 
 COPY ./composer.json /var/etc/composer.json
 RUN cd /var/etc && composer install
+RUN mkdir -p /home/www-data/public
 RUN echo '<?php phpinfo();' > /home/www-data/public/index.php
 
 WORKDIR /home/www-data
