@@ -59,6 +59,6 @@ RUN echo '<?php phpinfo();' > /home/www-data/public/index.php
 
 WORKDIR /home/www-data
 
-COPY entrypoint /usr/local/bin/
+COPY ./entrypoint.sh /usr/local/bin/
 
-ENTRYPOINT ["entrypoint"]
+ENTRYPOINT ["entrypoint.sh"]
