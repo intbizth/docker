@@ -15,6 +15,7 @@ fi
 # git config --global url."https://${GITHUB_ACCESS_TOKEN}:@github.com/".insteadOf "https://github.com/"
 if [ "${PHP_REPOSITORY}" == "" ]; then
   echo 'WARN: There are no `PHP_REPOSITORY` env defined.';
+  mkdir -p /home/www-data/www/public
   echo '<?php phpinfo();' > /home/www-data/www/public/index.php
 else
   rm -rf /home/www-data/www
