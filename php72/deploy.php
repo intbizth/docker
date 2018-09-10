@@ -80,8 +80,10 @@ if ($_ENV['CF_API_KEY'] ?? null) {
     after('deploy:cache:clear', 'deploy:cloudflare');
 }
 
-if ($_ENV['SETUP_DB'] ?? null) {
+if ($_ENV['DATA_SETUP'] ?? null) {
     after('deploy:vendors', 'database:setup');
 }
 
-after('cleanup', 'database:migrate');
+if ($_ENV['DATA_MIGRATE'] ?? null) {
+    after('cleanup', 'database:migrate');
+}
