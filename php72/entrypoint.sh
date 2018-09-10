@@ -13,6 +13,10 @@ if [ "${PHP_INIs}" != "" ]; then
   cat /usr/local/etc/php/conf.d/zzzz.ini
 fi
 
+if [ "${DEPLOYER_TASK}" == "" ]; then
+  DEPLOYER_TASK=deploy
+fi
+
 if [ "${FPM_CONFs}" != "" ]; then
   echo ${FPM_CONFs} > /usr/local/etc/php-fpm.d/zzzz.conf
   cat /usr/local/etc/php-fpm.d/zzzz.conf
@@ -25,7 +29,7 @@ if [ "${REPOSITORY}" == "" ]; then
   mkdir -p /home/www-data/current/public
   echo '<?php phpinfo();' > /home/www-data/current/public/index.php
 else
-  /var/etc/vendor/bin/dep -vvv --file=/home/www-data/deploy.php
+  /var/etc/vendor/bin/dep -vvv --file=/home/www-data/deploy.php $DEPLOYER_TASK
 fi
 
 # first arg is `-f` or `--some-option`
