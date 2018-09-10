@@ -64,6 +64,10 @@ task('cachetool:clear:apcu', function () {
     run("{{bin/php}} {{bin/cachetool}} apcu:cache:clear system {$options}");
 });
 
+task('test', function() {
+var_dump($_ENV);
+});
+
 if ($_ENV['OPcode_ON'] ?? null) {
     after('deploy:cache:clear', 'cachetool:clear:opcache');
 }
