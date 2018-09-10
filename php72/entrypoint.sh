@@ -29,6 +29,11 @@ if [ "${REPOSITORY}" == "" ]; then
   mkdir -p /home/www-data/current/public
   echo '<?php phpinfo();' > /home/www-data/current/public/index.php
 else
+  # if not symlink remove it!
+  if [ ! -L /home/www-data/current ] && [ -d /home/www-data/current ]; then
+    rm -rf /home/www-data/current
+  fi
+
   /var/etc/vendor/bin/dep -vvv --file=/home/www-data/deploy.php $DEPLOYER_TASK
 fi
 
