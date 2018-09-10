@@ -1,19 +1,61 @@
 <?php
 
-require '/var/etc/vendor/deployer/deployer/recipe/symfony4.php';
-require '/var/etc/vendor/deployer/recipes/recipe/cloudflare.php';
-require '/var/etc/vendor/deployer/recipes/recipe/cachetool.php';
+namespace Deployer;
 
-use function Deployer\{
-    after, desc, task, localhost, run, set, get, cd
-};
+require_once 'recipe/common.php';
+require_once 'recipe/cloudflare.php';
+require_once 'recipe/cachetool.php';
 
+//set('writable_chmod_mode', '0777');
 set('cachetool', '127.0.0.1:9000');
 set('cloudflare', [
     'email' => $_ENV['CF_EMAIL'] ?? null,
     'api_key' => $_ENV['CF_API_KEY'] ?? null,
     'domain' => $_ENV['CF_DOMAIN'] ?? null,
 ]);
+
+set('shared_dirs', ['var/log', 'var/sessions']);
+set('shared_files', ['.env']);
+set('writable_dirs', ['var']);
+
+set('bin/console', function () {
+    return parse('{{bin/php}} {{release_path}}/bin/console --no-interaction');
+});
+
+desc('Migrate database');
+task('database:migrate', function () {
+    run('{{bin/console}} doctrine:migrations:migrate --allow-no-migration');
+});
+
+desc('Clear cache');
+task('deploy:cache:clear', function () {
+    run('{{bin/console}} cache:clear --no-warmup');
+});
+
+desc('Warm up cache');
+task('deploy:cache:warmup', function () {
+    run('{{bin/console}} cache:warmup');
+});
+
+desc('Deploy project');
+task('deploy', [
+    'deploy:info',
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:vendors',
+    'deploy:cache:clear',
+    'deploy:cache:warmup',
+    'deploy:writable',
+    'deploy:symlink',
+    'deploy:unlock',
+    'database:migrate',
+    'cleanup',
+]);
+
+after('deploy', 'success');
 
 desc('Setup database');
 task('database:setup', function () {
@@ -86,8 +128,4 @@ if ($_ENV['CF_API_KEY'] ?? null) {
 
 if ($_ENV['DATA_SETUP'] ?? null) {
     after('deploy:vendors', 'database:setup');
-}
-
-if ($_ENV['DATA_MIGRATE'] ?? null) {
-    after('cleanup', 'database:migrate');
 }

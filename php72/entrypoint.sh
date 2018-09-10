@@ -35,6 +35,7 @@ else
   fi
 
   /var/etc/vendor/bin/dep -vvv --file=/var/etc/deploy.php $DEPLOYER_TASK
+  chown -R www-data:www-data /home/www-data
 fi
 
 # first arg is `-f` or `--some-option`
