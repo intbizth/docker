@@ -58,7 +58,7 @@ RUN cd /var/etc && composer install
 WORKDIR /home/www-data
 
 COPY ./entrypoint.sh /usr/local/bin/
-COPY ./deploy.php /home/www-data
+COPY ./deploy.php /var/etc
 
 ENTRYPOINT ["entrypoint.sh"]
 

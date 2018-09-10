@@ -34,8 +34,7 @@ else
     rm -rf /home/www-data/current
   fi
 
-  cat /home/www-data/deploy.php
-  /var/etc/vendor/bin/dep -vvv --file=/home/www-data/deploy.php $DEPLOYER_TASK
+  /var/etc/vendor/bin/dep -vvv --file=/var/etc/deploy.php $DEPLOYER_TASK
 fi
 
 # first arg is `-f` or `--some-option`
