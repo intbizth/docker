@@ -33,8 +33,8 @@ task('database:setup', function () {
 localhost('prod')
     ->set('writable_mode', 'chmod')
     ->set('deploy_path', '/home/www-data')
-    ->set('repository', $_ENV['repository'])
-    ->set('branch', $_ENV['branch'] ?? 'build')
+    ->set('repository', $_ENV['REPOSITORY'])
+    ->set('branch', $_ENV['BRANCH'] ?? 'build')
 ;
 
 /*
