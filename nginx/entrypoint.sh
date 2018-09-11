@@ -6,8 +6,13 @@ if [ "${HOST_MAPs}" != "" ]; then
     sed -i -- 's/#HOST_MAPs/'${HOST_MAPs}'/g' /etc/nginx/nginx.conf
 fi
 
+if [ "${NO_PROXY}" != "" ]; then
+    sed -i -- 's/http_x_forwarded_for/remote_addr/g' /etc/nginx/vhost.d/default.conf
+fi
+
 if [ "${SERVER_NAME}" != "" ]; then
     sed -i -- 's/SERVER_NAME/'${SERVER_NAME}'/g' /etc/nginx/vhost.d/default.conf
+    sed -i -- 's/#return 444;/return 444;/g' /etc/nginx/vhost.d/default.conf
 fi
 
 if [ "${FPM_UPSTREAM_URL}" != "" ]; then
