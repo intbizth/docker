@@ -22,20 +22,21 @@ if [ "${FPM_CONFs}" != "" ]; then
   cat /usr/local/etc/php-fpm.d/zzzz.conf
 fi
 
-## Github connect
-# git config --global url."https://${GITHUB_ACCESS_TOKEN}:@github.com/".insteadOf "https://github.com/"
-if [ "${REPOSITORY}" == "" ]; then
-  echo 'WARN: There are no `REPOSITORY` env defined.';
-  mkdir -p /home/www-data/current/public
-  echo '<?php phpinfo();' > /home/www-data/current/public/index.php
-else
-  # if not symlink remove it!
-  if [ ! -L /home/www-data/current ] && [ -d /home/www-data/current ]; then
-    rm -rf /home/www-data/current
-  fi
+if [ "${RESTART}" == "" ]; then
+  # deploy
+  if [ "${REPOSITORY}" == "" ]; then
+    echo 'WARN: There are no `REPOSITORY` env defined.';
+    mkdir -p /home/www-data/current/public
+    echo '<?php phpinfo();' > /home/www-data/current/public/index.php
+  else
+    # if not symlink remove it!
+    if [ ! -L /home/www-data/current ] && [ -d /home/www-data/current ]; then
+      rm -rf /home/www-data/current
+    fi
 
-  /var/etc/vendor/bin/dep -vvv --file=/var/etc/deploy.php $DEPLOYER_TASK
-  chown -R www-data:www-data /home/www-data
+    /var/etc/vendor/bin/dep -vvv --file=/var/etc/deploy.php $DEPLOYER_TASK
+    chown -R www-data:www-data /home/www-data
+  fi
 fi
 
 # first arg is `-f` or `--some-option`
