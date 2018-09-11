@@ -5,6 +5,7 @@ COPY ./conf.d /etc/nginx/conf.d/
 COPY ./http.d /etc/nginx/http.d/
 COPY ./server.d /etc/nginx/server.d/
 COPY ./vhost.d /etc/nginx/vhost.d/
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 COPY ./entrypoint.sh /usr/local/bin/
 
