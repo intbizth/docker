@@ -8,6 +8,7 @@ fi
 
 if [ "${NO_PROXY}" != "" ]; then
     sed -i -- 's/http_x_forwarded_for/remote_addr/g' /etc/nginx/vhost.d/default.conf
+    rm -rf /etc/nginx/http.d/cloudflare.conf
 fi
 
 if [ "${SERVER_NAME}" != "" ]; then
