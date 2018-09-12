@@ -3,8 +3,7 @@ FROM php:7.2-fpm-alpine3.8
 
 RUN apk add --no-cache \
         git \
-        fcgi \
-        cron
+        fcgi
 
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
