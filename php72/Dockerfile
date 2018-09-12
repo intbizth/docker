@@ -2,7 +2,8 @@ FROM composer
 FROM php:7.2-fpm-alpine3.8
 
 RUN apk add --no-cache \
-        git
+        git \
+        fcgi
 
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
@@ -61,5 +62,12 @@ COPY ./entrypoint.sh /usr/local/bin/
 COPY ./deploy.php /var/etc
 
 ENTRYPOINT ["entrypoint.sh"]
+
+HEALTHCHECK --interval=10s --timeout=3s \
+    CMD \
+    SCRIPT_NAME=/ping \
+    SCRIPT_FILENAME=/ping \
+    REQUEST_METHOD=GET \
+    cgi-fcgi -bind -connect 127.0.0.1:9000 || exit 1
 
 CMD ["php-fpm"]
