@@ -6,7 +6,7 @@ require_once 'recipe/common.php';
 require_once 'recipe/cloudflare.php';
 require_once 'recipe/cachetool.php';
 
-//set('writable_chmod_mode', '0777');
+set('writable_chmod_mode', '0777');
 set('cachetool', '127.0.0.1:9000');
 set('cloudflare', [
     'email' => $_ENV['CF_EMAIL'] ?? null,
