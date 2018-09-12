@@ -6,7 +6,7 @@ if [ "${HOST_MAPs}" != "" ]; then
     sed -i -- 's/#HOST_MAPs/'${HOST_MAPs}'/g' /etc/nginx/nginx.conf
 fi
 
-if [ "${NO_PROXY}" != "" ]; then
+if [ "${NO_PROXY}" == "1" ]; then
     sed -i -- 's/http_x_forwarded_for/remote_addr/g' /etc/nginx/vhost.d/default.conf
     rm -rf /etc/nginx/http.d/cloudflare.conf
 fi

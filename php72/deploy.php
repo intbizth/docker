@@ -110,22 +110,22 @@ task('test', function() {
 var_dump($_ENV);
 });
 
-if ($_ENV['OPcode_ON'] ?? null) {
-    after('deploy:cache:clear', 'cachetool:clear:opcache');
-}
-
-if ($_ENV['APC_ON'] ?? null) {
-    after('deploy:cache:clear', 'cachetool:clear:apc');
-}
-
-if ($_ENV['APCu_ON'] ?? null) {
-    after('deploy:cache:clear', 'cachetool:clear:apcu');
-}
-
 if ($_ENV['CF_API_KEY'] ?? null) {
     after('deploy:cache:clear', 'deploy:cloudflare');
 }
 
-if ($_ENV['DATA_SETUP'] ?? null) {
+if (1 === intval($_ENV['OPcode_ON'] ?? 0)) {
+    after('deploy:cache:clear', 'cachetool:clear:opcache');
+}
+
+if (1 === intval($_ENV['APC_ON'] ?? 0)) {
+    after('deploy:cache:clear', 'cachetool:clear:apc');
+}
+
+if (1 === intval($_ENV['APCu_ON'] ?? 0)) {
+    after('deploy:cache:clear', 'cachetool:clear:apcu');
+}
+
+if (1 === intval($_ENV['DATA_SETUP'] ?? 0)) {
     after('deploy:vendors', 'database:setup');
 }

@@ -11,7 +11,7 @@ if [ "${FPM_CONFs}" != "" ]; then
   cat /usr/local/etc/php-fpm.d/zzzz.conf
 fi
 
-if [ "${RESTART}" == "" ]; then
+if [ "${RESTART}" == "" ] || [ "${RESTART}" == "0" ]; then
   # deploy
   if [ "${REPOSITORY}" == "" ]; then
     echo 'WARN: There are no `REPOSITORY` env defined.';
