@@ -21,7 +21,6 @@ fi
 
 if [ "${SOCKET_IO_URL}" != "" ]; then
     sed -i -- 's/node:80/'${SOCKET_IO_URL}'/g' /etc/nginx/vhost.d/default.conf
-    sed -i -- 's/node:80/'${SOCKET_IO_URL}'/g' /etc/nginx/vhost.d/wss.conf
 fi
 
 # first arg is `-f` or `--some-option`
