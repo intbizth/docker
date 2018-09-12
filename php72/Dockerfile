@@ -64,7 +64,7 @@ COPY ./deploy.php /var/etc
 
 ENTRYPOINT ["entrypoint.sh"]
 
-HEALTHCHECK --interval=10s --timeout=3s \
+HEALTHCHECK --retries=30 \
     CMD \
     SCRIPT_NAME=/pingpong \
     SCRIPT_FILENAME=/pingpong \
