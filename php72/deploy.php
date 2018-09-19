@@ -14,7 +14,7 @@ set('cloudflare', [
     'domain' => $_ENV['CF_DOMAIN'] ?? null,
 ]);
 
-set('shared_dirs', ['var/log', 'var/sessions']);
+set('shared_dirs', ['var/log', 'var/sessions', 'var/media']);
 set('shared_files', ['.env']);
 set('writable_dirs', ['var']);
 
