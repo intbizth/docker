@@ -3,7 +3,8 @@ FROM php:7.2-fpm-alpine3.8
 
 RUN apk add --no-cache \
         git \
-        fcgi
+        fcgi \
+        imagemagick
 
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
@@ -14,7 +15,6 @@ RUN set -xe \
         libpng-dev \
         jpeg-dev \
         freetype-dev \
-        imagemagick-dev \
         rabbitmq-c-dev \
         zlib-dev \
     && docker-php-ext-configure gd \
