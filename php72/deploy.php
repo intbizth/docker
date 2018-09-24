@@ -110,6 +110,12 @@ task('test', function() {
 var_dump($_ENV);
 });
 
+task('yarn:build', function() {
+    run('node -v');
+    run('yarn -v');
+    run('yarn run build');
+});
+
 if ($_ENV['CF_API_KEY'] ?? null) {
     after('deploy:cache:clear', 'deploy:cloudflare');
 }
@@ -128,4 +134,8 @@ if (1 === intval($_ENV['APCu_ON'] ?? 0)) {
 
 if (1 === intval($_ENV['DATA_SETUP'] ?? 0)) {
     after('deploy:vendors', 'database:setup');
+}
+
+if (1 === intval($_ENV['YARN_BUILD'] ?? 0)) {
+    after('deploy:vendors', 'yarn:build');
 }
